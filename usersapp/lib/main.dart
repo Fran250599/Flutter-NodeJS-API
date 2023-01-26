@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 
@@ -13,7 +14,30 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  getUsers() {}
+  late Map data;
+  late List usersData;
+
+  getUsers() async {
+    http.Response response =
+        await http.get(Uri.parse('http://10.0.2.2:4000 /api/users'));
+    data = json.decode(response.body);
+
+    setState(() {
+      usersData = data['users'];
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    String url = Platform.isAndroid
+        ? 'http://192.168.178.23:3006'
+        : 'http://localhost:3006';
+
+    getUsers();
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +45,8 @@ class _HomePageState extends State<HomePage> {
         title: Text('User list'),
         backgroundColor: Colors.lightGreen,
       ),
-
-      //body: ListView.builder(),
+      //body:
+      //ListView.builder(itemCount: usersData == null ? 0 : usersData.length),
     );
   }
 }
