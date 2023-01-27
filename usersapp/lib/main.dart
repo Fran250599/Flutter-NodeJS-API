@@ -16,7 +16,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late Map data;
-  late List usersData;
+  late List usersData = [];
 
   getUsers() async {
     http.Response response =
